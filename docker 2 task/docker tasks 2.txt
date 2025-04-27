@@ -1,0 +1,58 @@
+1.Build the web server - 
+# Use Nginx as the base image
+FROM nginx:alpine
+
+# Copy the HTML file containing basic details to the default Nginx HTML directory
+COPY index.html /usr/share/nginx/html/index.html
+
+# Expose port 80 to access the website
+EXPOSE 80
+
+2.docker compse
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "80:80" # Expose port 80 on the host to port 80 on the container
+    container_name: personal-site
+3.index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Personal Info</title>
+</head>
+<body>
+    <h1>Hello, I'm [Your Name]!</h1>
+    <p>Role: [Your Role]</p>
+    <p>Email: [Your Email]</p>
+    <p>Location: [Your Location]</p>
+</body>
+</html>
+
+4.setup ec2 instance.
+ssh -i "your-key.pem" ec2-user@<your-ec2-public-ip>
+5.install docker and docker compose.
+# Install Docker
+sudo yum update -y
+sudo amazon-linux-extras install docker -y
+sudo service docker start
+sudo usermod -aG docker ec2-user
+
+# Install Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+# Verify Docker and Docker Compose installation
+docker --version
+docker-compose --version
+5.create project folder and files
+mkdir personal-website
+cd personal-website
+6. Build and run the docker container using docker compose.
+docker-compose up --build -d
+7.access web url
+http://<your-ec2-public-ip>
+8.stop and remove the containers.
+docker-compose down
+
