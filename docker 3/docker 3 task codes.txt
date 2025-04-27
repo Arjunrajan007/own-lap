@@ -1,0 +1,43 @@
+1.create project directory - 
+mkdir custom-nginx
+cd custom-nginx
+2.create docker file-
+cat <<EOF > Dockerfile
+# Use the official Nginx base image
+FROM nginx:alpine
+
+# Set a custom label (optional)
+LABEL maintainer="your_email@example.com"
+
+# Copy custom nginx configuration (optional)
+# COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose port 80 for web access
+EXPOSE 80
+EOF
+3. setup docker compose to deploy the image
+cat <<EOF > docker-compose.yml
+version: '3'
+services:
+  nginx:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - /var/opt/nginx:/usr/share/nginx/html  # Bind mount local directory to nginx container
+    container_name: custom-nginx
+EOF
+4.build and  start the container - 
+docker-compose up --build -d
+5.verify the container and volume - 
+docker ps
+6.check the volume bind amount - 
+echo "<h1>Hello from Custom Nginx</h1>" | sudo tee /var/opt/nginx/index.html > /dev/null
+7. access web url-
+http://<your-ec2-public-ip>
+8.login docker hub-
+docker login
+9.Custom image
+docker tag custom-nginx:latest your-dockerhub-username/custom-nginx:latest
+
+
