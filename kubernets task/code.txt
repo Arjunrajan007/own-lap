@@ -1,0 +1,61 @@
+1.Install WSL (Windows Subsystem for Linux) - wsl --install
+
+2.install docker in wsl 
+
+sudo apt update
+sudo apt install -y docker.io
+sudo systemctl enable docker
+sudo service docker start
+
+3.add user to docker group
+
+sudo usermod -aG docker $USER
+newgrp docker
+
+4.Install kubectl
+
+curl -LO "https://dl.k8s.io/release/$(curl -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+sudo mv kubectl /usr/local/bin/
+
+5. test version
+
+kubectl version --client
+
+6. Install Minikube
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+7.Start Minikube with VirtualBox
+
+minikube start --driver=virtualbox
+
+8.Check status:
+
+
+minikube status
+
+9.Kubernetes Namespaces
+View All Namespaces
+
+kubectl get namespaces
+
+10. make kubectl executable
+
+chmod +x kubectl
+
+11.Move it to a directory in your PATH
+
+
+sudo mv kubectl /usr/local/bin/
+
+12.verify installation
+
+kubectl version --client
+
+13. kubectl get nodes
+
+14.create namespace
+kubectl create namespace my-namespace
+
